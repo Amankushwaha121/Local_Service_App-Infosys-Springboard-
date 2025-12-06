@@ -1,4 +1,3 @@
-     
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
@@ -6,11 +5,17 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import ProviderRegister from './components/auth/ProviderRegister';
 import ProviderDashboard from './components/provider/ProviderDashboard';
+import ProviderProfile from './components/provider/ProviderProfile';
+// import ProviderServices from './components/provider/ProviderServices';
+import ProviderBookings from './components/provider/ProviderBookings';
 import Profile from './components/profile/Profile';
 import ServiceSearch from './components/services/ServiceSearch';
 import ServiceDetail from './components/services/ServiceDetail';
 import Booking from './components/booking/Booking';
 import BookingStatus from './components/booking/BookingStatus';
+ import AdminLogin from './components/Admin/AdminLogin';
+ import AdminDashboard from './components/Admin/AdminDashboard';
+ import AdminRoute from './components/Admin/AdminRoute';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -66,11 +71,7 @@ function App() {
     localStorage.removeItem('userType');
     localStorage.removeItem('loginTime');
   };
-  // Temporary placeholder routes for provider management
-const ProviderServices = () => <div className="max-w-4xl mx-auto p-8"><h2 className="text-2xl font-bold">Manage Services - Coming Soon</h2></div>;
-const ProviderBookings = () => <div className="max-w-4xl mx-auto p-8"><h2 className="text-2xl font-bold">Bookings Management - Coming Soon</h2></div>;
-const ProviderProfile = () => <div className="max-w-4xl mx-auto p-8"><h2 className="text-2xl font-bold">Profile Settings - Coming Soon</h2></div>;
-
+ 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar 
@@ -93,12 +94,27 @@ const ProviderProfile = () => <div className="max-w-4xl mx-auto p-8"><h2 classNa
           <Route path="/booking-status" element={<BookingStatus />} />
           <Route path="/register-provider" element={<ProviderRegister setProvider={setProvider} />} />
           <Route path="/provider/dashboard" element={<ProviderDashboard provider={provider} />} />
+            {/* <Route path="/provider/services" element={<ProviderServices provider={provider} setProvider={setProvider} />} /> */}
+            <Route path="/provider/bookings" element={<ProviderBookings provider={provider} setProvider={setProvider}  />} />
+            <Route 
+              path="/provider/profile" 
+              element={<ProviderProfile provider={provider} setProvider={setProvider} />} 
+            />
 
-         {/* coming soon */}
-          <Route path="/provider/services" element={<ProviderServices />} />
-            <Route path="/provider/bookings" element={<ProviderBookings />} />
-            <Route path="/provider/profile" element={<ProviderProfile />} />
-        </Routes>
+
+           {/* Admin Routes */}
+  
+          <Route path="/admin" element={<AdminLogin />} />
+            <Route 
+              path="/admin/dashboard" 
+              element={
+                <AdminRoute>
+                  <AdminDashboard />
+                </AdminRoute>
+              } 
+            />
+          
+         </Routes> 
       </main>
     </div>
   );

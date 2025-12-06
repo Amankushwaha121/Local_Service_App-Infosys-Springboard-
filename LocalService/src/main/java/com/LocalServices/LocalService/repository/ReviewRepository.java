@@ -1,7 +1,5 @@
 package com.LocalServices.LocalService.repository;
 
-
-
 import com.LocalServices.LocalService.model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;

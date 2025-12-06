@@ -1,6 +1,5 @@
 package com.LocalServices.LocalService.dto;
 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 

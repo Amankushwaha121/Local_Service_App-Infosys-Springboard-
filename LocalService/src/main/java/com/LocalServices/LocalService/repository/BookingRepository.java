@@ -9,16 +9,12 @@ import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    List<Booking> findByUserId(Long userId);
-    List<Booking> findByProviderId(Long providerId);
+    List<Booking> findByUser_Id(Long userId);
+    List<Booking> findByProvider_Id(Long providerId);
     List<Booking> findByStatus(BookingStatus status);
-
-    // Find bookings by service ID
     List<Booking> findByServiceId(Long serviceId);
-
-    // Find bookings by user and status
     List<Booking> findByUserIdAndStatus(Long userId, BookingStatus status);
-
-    // Find bookings by provider and status
     List<Booking> findByProviderIdAndStatus(Long providerId, BookingStatus status);
+    boolean existsByProviderId(Long providerId);
+
 }

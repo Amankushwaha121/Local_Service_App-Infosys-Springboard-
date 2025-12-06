@@ -16,7 +16,6 @@ public class ServiceService {
     public List<com.LocalServices.LocalService.model.Service> getAllServices() {
         return serviceRepository.findAll();
     }
-
     public Optional<Service> getServiceById(Long id) {
         return serviceRepository.findById(id);
     }

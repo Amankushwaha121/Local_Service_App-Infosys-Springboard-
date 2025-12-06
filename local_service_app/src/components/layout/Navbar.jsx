@@ -29,22 +29,19 @@ const Navbar = ({ user, provider, onLogout }) => {
               }`}
             >
               Home
-            </Link>
+            </Link> 
+
+            {/* Admin Link */}
+            {/* <Link to="/admin" className="text-gray-700 hover:text-blue-600">
+              Admin
+            </Link> */}
 
             {isLoggedIn ? (
               <>
-                 {provider && (
+                {/* Provider Specific Links */}
+                {provider && (
                   <>
-                    {/* <Link 
-                      to="/provider/dashboard" 
-                      className={`hover:text-blue-600 transition-colors ${
-                        location.pathname === '/provider/dashboard' ? 'text-blue-600 font-semibold' : 'text-gray-600'
-                      }`}
-                    >
-                      Dashboard
-                    </Link> */}
-
-                    <Link
+                   <Link
                     to="/provider/dashboard"
                     className={`hover:text-blue-600 transition-colors ${
                       location.pathname === '/provider/dashboard' || location.pathname === '/profile'
@@ -54,14 +51,14 @@ const Navbar = ({ user, provider, onLogout }) => {
                   >
                     Dashboard
                   </Link>
-                    <Link 
+                    {/* <Link 
                       to="/provider/services" 
                       className={`hover:text-blue-600 transition-colors ${
                         location.pathname === '/provider/services' ? 'text-blue-600 font-semibold' : 'text-gray-600'
                       }`}
                     >
                       My Services
-                    </Link>
+                    </Link> */}
                     <Link 
                       to="/provider/bookings" 
                       className={`hover:text-blue-600 transition-colors ${
@@ -70,33 +67,49 @@ const Navbar = ({ user, provider, onLogout }) => {
                     >
                       Bookings
                     </Link>
+                    <Link 
+                      to="/provider/profile" 
+                      className={`hover:text-blue-600 transition-colors ${
+                        location.pathname === '/provider/profile' ? 'text-blue-600 font-semibold' : 'text-gray-600'
+                      }`}
+                    >
+                     Profile
+                    </Link>
                   </>
                 )}
 
-                <Link 
-                  to="/profile" 
-                  className={`hover:text-blue-600 transition-colors ${
-                    location.pathname === '/profile' ? 'text-blue-600 font-semibold' : 'text-gray-600'
-                  }`}
-                >
-                  Profile
-                </Link>
-                <Link 
-                  to="/booking-status" 
-                  className={`hover:text-blue-600 transition-colors ${
-                    location.pathname === '/booking-status' ? 'text-blue-600 font-semibold' : 'text-gray-600'
-                  }`}
-                >
-                  My Bookings
-                </Link>
+                {/* User Specific Links */}
+                {user && (
+                  <>
+                    <Link 
+                      to="/booking-status" 
+                      className={`hover:text-blue-600 transition-colors ${
+                        location.pathname === '/booking-status' ? 'text-blue-600 font-semibold' : 'text-gray-600'
+                      }`}
+                    >
+                      My Bookings
+                    </Link>
+                    <Link 
+                      to="/profile" 
+                      className={`hover:text-blue-600 transition-colors ${
+                        location.pathname === '/user/profile' ? 'text-blue-600 font-semibold' : 'text-gray-600'
+                      }`}
+                    >
+                      My Profile
+                    </Link>
+                  </>
+                )}
+
+                {/* Common for both */}
                 <button 
                   onClick={handleLogout}
                   className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
                 >
                   Logout
                 </button>
+                
                 <span className="text-gray-700">
-                  Hello, {user ? user.name : provider.name}
+                  Hello, {user ? user.name : provider.businessName}
                 </span>
               </>
             ) : (
@@ -113,11 +126,8 @@ const Navbar = ({ user, provider, onLogout }) => {
                 >
                   Register
                 </Link>
-
               </div>
             )}
-           
-
           </div>
         </div>
       </div>
@@ -126,3 +136,4 @@ const Navbar = ({ user, provider, onLogout }) => {
 };
 
 export default Navbar;
+

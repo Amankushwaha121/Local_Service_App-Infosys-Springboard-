@@ -26,6 +26,7 @@ public class AuthController {
 
     @Autowired
     private ServiceProviderService providerService;
+    @Autowired
     private BookingService bookingService;
 
     // Customer Registration API

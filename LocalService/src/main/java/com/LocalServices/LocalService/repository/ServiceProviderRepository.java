@@ -1,6 +1,5 @@
 package com.LocalServices.LocalService.repository;
 
-
 import com.LocalServices.LocalService.model.ServiceProvider;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +16,8 @@ public interface ServiceProviderRepository extends JpaRepository<ServiceProvider
                                                        @Param("location") String location);
 
     List<ServiceProvider> findByLocationContaining(String location);
+
+    // New method to find by service type in the list
+    @Query("SELECT sp FROM ServiceProvider sp WHERE :serviceType MEMBER OF sp.serviceTypes")
+    List<ServiceProvider> findByServiceType(@Param("serviceType") String serviceType);
 }

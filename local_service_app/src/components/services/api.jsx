@@ -1,36 +1,22 @@
+// src/components/services/api.jsx
+
 const API_BASE_URL = 'http://localhost:8080/api';
 
-// Helper function to handle API responses
+// Enhanced API helper
 const handleResponse = async (response) => {
-  const data = await response.json();
-  if (!data.success) {
-    throw new Error(data.message);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
-  return data.data;
-};
-
-// Auth APIs
-export const authAPI = {
-  login: (email, password, userType) => 
-    fetch(`${API_BASE_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, userType }),
-    }).then(handleResponse),
-
-  registerCustomer: (userData) =>
-    fetch(`${API_BASE_URL}/auth/addUser/customer`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
-    }).then(handleResponse),
-
-  registerProvider: (providerData) =>
-    fetch(`${API_BASE_URL}/auth/addUser/provider`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(providerData),
-    }).then(handleResponse),
+  
+  const data = await response.json();
+  console.log('API Response:', data);
+  
+  // Your backend returns {success, message, data} structure
+  if (data.success) {
+    return data.data;
+  } else {
+    throw new Error(data.message || 'Request failed');
+  }
 };
 
 // Services APIs
@@ -41,9 +27,20 @@ export const servicesAPI = {
   getById: (id) =>
     fetch(`${API_BASE_URL}/services/${id}`).then(handleResponse),
 
-  search: (serviceType, location) =>
-    fetch(`${API_BASE_URL}/services/search?serviceType=${serviceType}&location=${location}`)
-      .then(handleResponse),
+  search: (serviceType, location) => {
+    const params = new URLSearchParams();
+    if (serviceType && serviceType.trim() !== '') {
+      params.append('serviceType', serviceType);
+    }
+    if (location && location.trim() !== '') {
+      params.append('location', location);
+    }
+    
+    const url = `${API_BASE_URL}/services/search?${params.toString()}`;
+    console.log('Search URL:', url);
+    
+    return fetch(url).then(handleResponse);
+  },
 
   create: (serviceData) =>
     fetch(`${API_BASE_URL}/services`, {
@@ -51,50 +48,40 @@ export const servicesAPI = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(serviceData),
     }).then(handleResponse),
-};
 
-// Bookings APIs
-export const bookingsAPI = {
-  create: (bookingData) =>
-    fetch(`${API_BASE_URL}/bookings`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(bookingData),
-    }).then(handleResponse),
-
-  getUserBookings: (userId) =>
-    fetch(`${API_BASE_URL}/bookings/user/${userId}`)
-      .then(handleResponse),
-
-  getProviderBookings: (providerId) =>
-    fetch(`${API_BASE_URL}/bookings/provider/${providerId}`)
-      .then(handleResponse),
-
-  updateStatus: (bookingId, status) =>
-    fetch(`${API_BASE_URL}/bookings/${bookingId}/status?status=${status}`, {
+  update: (id, serviceData) =>
+    fetch(`${API_BASE_URL}/services/${id}`, {
       method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(serviceData),
+    }).then(handleResponse),
+
+  delete: (id) =>
+    fetch(`${API_BASE_URL}/services/${id}`, {
+      method: 'DELETE',
     }).then(handleResponse),
 };
 
-// Helper function to format data for API
-export const formatServiceForAPI = (service) => ({
-  name: service.name,
-  serviceType: service.serviceType,
-  experience: service.experience,
-  cost: parseFloat(service.cost.replace('$', '')),
-  availability: service.availability,
-  location: service.location,
-  description: service.description,
-  provider: { id: service.providerId }
-});
+// services/api.js mein yeh add karein
+export const providersAPI = {
+  getAll: () =>
+    fetch(`${API_BASE_URL}/providers`).then(handleResponse),
 
-export const formatBookingForAPI = (booking) => ({
-  date: booking.date,
-  time: booking.time,
-  specialInstructions: booking.specialInstructions,
-  contactPhone: booking.contactPhone,
-  address: booking.address,
-  user: { id: booking.userId },
-  service: { id: booking.serviceId },
-  provider: { id: booking.providerId }
-});
+  search: (serviceType, location) => {
+    const params = new URLSearchParams();
+    if (serviceType && serviceType.trim() !== '') {
+      params.append('serviceType', serviceType);
+    }
+    if (location && location.trim() !== '') {
+      params.append('location', location);
+    }
+    
+    const url = `${API_BASE_URL}/providers/search?${params.toString()}`;
+    console.log('Provider Search URL:', url);
+    
+    return fetch(url).then(handleResponse);
+  },
+
+  getById: (id) =>
+    fetch(`${API_BASE_URL}/providers/${id}`).then(handleResponse),
+};

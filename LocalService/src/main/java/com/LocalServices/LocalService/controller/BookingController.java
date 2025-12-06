@@ -1,12 +1,12 @@
 package com.LocalServices.LocalService.controller;
 
-import com.LocalServices.LocalService.model.User;
 import com.LocalServices.LocalService.dto.BookingRequest;
 import com.LocalServices.LocalService.dto.ApiResponse;
 import com.LocalServices.LocalService.model.Booking;
 import com.LocalServices.LocalService.model.BookingStatus;
 import com.LocalServices.LocalService.model.Service;
 import com.LocalServices.LocalService.model.ServiceProvider;
+import com.LocalServices.LocalService.model.User;
 import com.LocalServices.LocalService.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +50,6 @@ public class BookingController {
     @PostMapping
     public ResponseEntity<ApiResponse> createBooking(@RequestBody Booking booking) {
         try {
-            // Set default status if not provided
             if (booking.getStatus() == null) {
                 booking.setStatus(BookingStatus.PENDING);
             }
@@ -80,7 +79,6 @@ public class BookingController {
             Booking booking = bookingService.getBookingById(id)
                     .orElseThrow(() -> new RuntimeException("Booking not found with id: " + id));
 
-            // Convert string to BookingStatus enum
             BookingStatus bookingStatus;
             try {
                 bookingStatus = BookingStatus.valueOf(status.toUpperCase());
@@ -143,10 +141,8 @@ public class BookingController {
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createBookingFromRequest(@RequestBody BookingRequest bookingRequest) {
         try {
-            // Create new booking from request
             Booking booking = new Booking();
 
-            // Set user, service, provider (you'll need to fetch these from their services)
             User user = new User();
             user.setId(bookingRequest.getUserId());
             booking.setUser(user);

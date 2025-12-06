@@ -1,7 +1,5 @@
 package com.LocalServices.LocalService.service;
 
-
-
 import com.LocalServices.LocalService.model.ServiceProvider;
 import com.LocalServices.LocalService.repository.ServiceProviderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +46,9 @@ public class ServiceProviderService {
         return providerRepository.save(provider);
     }
 
-    public void deleteProvider(Long id) {
-        providerRepository.deleteById(id);
-    }
+//    public void deleteProvider(Long id) {
+//        providerRepository.deleteById(id);
+//    }
 
     public List<ServiceProvider> searchProviders(String serviceType, String location) {
         return providerRepository.findByServiceTypeAndLocation(serviceType, location);
@@ -59,4 +57,20 @@ public class ServiceProviderService {
     public boolean existsByEmail(String email) {
         return providerRepository.existsByEmail(email);
     }
+    // Admin ke liye verify/unverify update karne ka helper
+    public ServiceProvider updateVerificationStatus(Long id, boolean status) {
+        ServiceProvider provider = providerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Provider not found with id: " + id));
+        provider.setIsVerified(status);
+        return providerRepository.save(provider);
+    }
+
+    public void deleteProvider(Long id) {
+        if (!providerRepository.existsById(id)) {
+            throw new RuntimeException("Provider not found with id: " + id);
+        }
+        providerRepository.deleteById(id);
+    }
+
+
 }

@@ -1,14 +1,13 @@
 package com.LocalServices.LocalService.repository;
 
-import com.LocalServices.LocalService.entity.Users;
+import com.LocalServices.LocalService.model.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UsersRepo extends JpaRepository<Users, String> {
+public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
-    Optional<Users> findByEmail(String email);
+    Optional<Payment> findByBooking_Id(Long bookingId);
 }
-
